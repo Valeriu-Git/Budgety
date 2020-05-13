@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Budget App</title>
+    <link rel="stylesheet" href="{% static 'App/CSS/style.css' %}">
+    <link href='https://css.gg/check-o.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <div id="brand-space">
+        <a href="#" id="brand">
+          <img src="{% static 'App/images/piggybank.png' %}" alt=""  id="brand-icon"></img>
+          <p id="brand-text">Budgety</p>
+        </a>
+    </div>
+
+    <div id="balance">
+      <p>Balance:</p>
+      <p class="balance-value">0$</p>
+    </div>
+
+    <div id="data">
+
+          <div class="currentstate">
+
+            <div class="totalincome">
+              <p>INCOME</p>
+              <p class="income-value">0$</p>
+            </div>
+
+            <div class="totalexpense">
+              <p>EXPENSES</p>
+              <p class="expense-value">0$</p>
+            </div>
+
+          </div>
+
+
+  </div>
+
+    <div id="add-tranzaction">
+
+      <select class="type-transaction">
+          <option value="income">+</option>
+          <option value="expense">-</option>
+      </select>
+
+      <input type="text" class="form text" value="" placeholder="Enter description" >
+      <input type="number" class="form number" value="" placeholder="Enter sum">
+      <input type="image" src="{% static 'App/images/bluetick.png' %}" value="" class="tick">
+
+    </div>
+
+
+    <div id="tranzactionContainer">
+
+      <div class="incomeContainer">
+
+        <div class="income-title income"><p>INCOME</p></div>
+        <div class="income-transactions">
+
+
+        </div>
+      </div>
+
+
+      <div class="expenseContainer">
+        <div class="expense-title expense"><p>EXPENSES</p></div>
+        <div class="expense-transactions">
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+<script type="text/javascript">
+  var stat="{% static 'App/images/' %}";
+</script>
+ <script  type="text/javascript" src="{% static 'App/Javascript/source.js' %}"></script>
+  </body>
+</html>
