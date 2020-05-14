@@ -1,4 +1,4 @@
-"""Budget_App URL Configuration
+"""Budget_App URL Configurationr
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -19,5 +19,7 @@ from App import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index)
+    path('',views.index),
+    path('registration/',views.registration, name='registration-url'),
+    path('login/',views.login,name='login-url')
 ]

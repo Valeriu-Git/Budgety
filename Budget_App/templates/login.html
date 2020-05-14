@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block user %}
+
+  <img src="{% static 'App/images/user-male.png' %}" alt="">
+
+    <div class="user">
+      <p>  Welcome </p>
+      <p> {{user}}</p>
+    </div>
+
+    <div class="sign-out">
+      <a href="">Sign out</a>
+    </div>
+{% endblock %}

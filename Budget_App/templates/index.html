@@ -10,6 +10,7 @@
 
   </head>
   <body>
+  {% url 'registration-url'  as registration %}
 
     <div id="brand-space">
         <a href="#" id="brand">
@@ -23,16 +24,19 @@
       <p class="balance-value">0$</p>
     </div>
 
+
     <div class="user-authentication">
+      {% block user %}
       <div class="register">
-        <a href="#">Register</a>
+        <a href="{{registration}}">Register</a>
       </div>
 
       <div class="login">
         <a href="#">Log in</a>
       </div>
+      {% endblock %}
     </div>
-    
+
     <div id="data">
 
           <div class="currentstate">
