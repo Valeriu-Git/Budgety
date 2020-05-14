@@ -11,7 +11,7 @@
   </head>
   <body>
   {% url 'registration-url'  as registration %}
-
+  {% url 'login-url' as login %}
     <div id="brand-space">
         <a href="#" id="brand">
           <img src="{% static 'App/images/piggybank.png' %}" alt=""  id="brand-icon"></img>
@@ -32,7 +32,7 @@
       </div>
 
       <div class="login">
-        <a href="#">Log in</a>
+        <a href="{{login}}">Log in</a>
       </div>
       {% endblock %}
     </div>
