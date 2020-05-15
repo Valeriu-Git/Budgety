@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+
 {% block user %}
 
   <img src="{% static 'App/images/user-male.png' %}" alt="">
@@ -12,4 +13,46 @@
     <div class="sign-out">
       <a href="{{signout}}">Sign out</a>
     </div>
+{% endblock %}
+
+{% block add-transaction %}
+
+<form id="new-transaction-form" method="POST">
+  {% csrf_token %}
+<select class="type-transaction">
+    <option value="income">+</option>
+    <option value="expense">-</option>
+</select>
+<input  type="text" class="form text" value="" name="description" placeholder="Enter description"  >
+<input  type="number" class="form number" value="" name="valoare" placeholder="Enter sum"  >
+<button type="submit" name="button"><img  src="{% static 'App/images/bluetick.png' %}" value="" class="tick"></button>
+</form>
+
+{% endblock %}
+{% block transaction-script %}
+{% url 'userpage-url' as userpage %}
+<script type="text/javascript">
+  $(document).on('submit','#new-transaction-form',function(e){
+
+    $.ajax({
+      type:'POST',
+      url:'{{userpage}}',
+      data:{
+        description:$(".form.text").val(),
+        valoare:$(".form.number").val(),
+        type:$('.type-transaction').val(),
+        csrfmiddlewaretoken:'{{csrf_token}}'
+      }
+    })
+      e.preventDefault();
+      var x=$(".form.text").val()
+      var y=$(".form.number").val()
+      var z=$('.type-transaction').val()
+      $(".form.text").val('')
+      $(".form.number").val('')
+      console.log(x);
+      console.log(y);
+      console.log(z);
+  });
+</script>
 {% endblock %}

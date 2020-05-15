@@ -28,6 +28,13 @@ def registration(request):
 
 def userpage(request):
     current_user=request.user
+    if request.method=='POST':
+        username=request.POST['description']
+        password=request.POST['valoare']
+        type=request.POST['type']
+        print(username)
+        print(password)
+        print(type)
     return render(request,'userpage.html',{'user':current_user})
 
 def login(request):

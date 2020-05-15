@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'App/CSS/style.css' %}">
     <link href='https://css.gg/check-o.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body>
   {% url 'registration-url'  as registration %}
@@ -57,7 +57,7 @@
   </div>
 
     <div id="add-tranzaction">
-
+    {% block  add-transaction %}
       <select class="type-transaction">
           <option value="income">+</option>
           <option value="expense">-</option>
@@ -66,7 +66,7 @@
       <input type="text" class="form text" value="" placeholder="Enter description" >
       <input type="number" class="form number" value="" placeholder="Enter sum">
       <input type="image" src="{% static 'App/images/bluetick.png' %}" value="" class="tick">
-
+    {% endblock %}
     </div>
 
 
@@ -92,7 +92,8 @@
       </div>
 
     </div>
-
+{% block transaction-script %}
+{% endblock %}
 <script type="text/javascript">
   var stat="{% static 'App/images/' %}";
 </script>

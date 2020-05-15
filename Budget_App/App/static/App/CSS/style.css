@@ -89,9 +89,7 @@ justify-content: flex-end;
   justify-content: center;
   align-items: center;
 }
-.user p{
-  margin: 0;
-}
+
 #brand-space #brand #brand-text, #balance p{
   margin:0;
 
@@ -164,15 +162,18 @@ flex-basis: 100%;
 
 #add-tranzaction{
   grid-area: C;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-basis: 100%;
+
   font-size: 15px;
   background: #F0F0F0;
 }
 
-#add-tranzaction select
+#add-tranzaction form{
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+select
 {
   border: 0;
   outline: none;
@@ -183,7 +184,7 @@ flex-basis: 100%;
   border:1px solid transparent;
 }
 
-#add-tranzaction .form{
+.form{
   border:0;
   font-size:15px;
   margin-left: 30px;
@@ -201,11 +202,11 @@ flex-basis: 100%;
   animation-fill-mode: forwards;
 }
 
-#add-tranzaction .form.text{
+ .form.text{
   padding:10px 60px 10px 5px;
 }
 
-#add-tranzaction .form.number{
+ .form.number{
   padding: 10px 0 10px 5px;
   width: 100px;
 }
@@ -218,6 +219,9 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+button{
+  border: 0;
+}
 .tick
 {
   margin-left: 30px;
@@ -397,7 +401,7 @@ body {
     flex-direction: column;
   }
 
-  #add-tranzaction{
+  #add-tranzaction form{
     flex-direction: column;
     justify-content: space-around;
   }

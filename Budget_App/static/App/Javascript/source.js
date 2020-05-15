@@ -219,7 +219,7 @@ var Controller=(function(UICtrl,BCtrl){
           var totals=Budget.getBudget();
           UserInterface.addElement(transaction.id,type,transaction.description,transaction.val);
           UserInterface.UpdateBudget(totals.income,totals.expenses,totals.income-totals.expenses);
-          UserInterface.emptyForms();
+
           UserInterface.animateBudget();
         }
     })
