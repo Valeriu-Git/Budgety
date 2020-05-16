@@ -12,6 +12,7 @@
   <body>
   {% url 'registration-url'  as registration %}
   {% url 'login-url' as login %}
+
     <div id="brand-space">
         <a href="#" id="brand">
           <img src="{% static 'App/images/piggybank.png' %}" alt=""  id="brand-icon"></img>
@@ -76,8 +77,9 @@
 
         <div class="income-title income"><p>INCOME</p></div>
         <div class="income-transactions">
+          {% block income_transactions %}
 
-
+          {% endblock %}
         </div>
       </div>
 
@@ -85,13 +87,14 @@
       <div class="expenseContainer">
         <div class="expense-title expense"><p>EXPENSES</p></div>
         <div class="expense-transactions">
-
-
         </div>
+        {% block expense_transactions %}
 
+        {% endblock %}
       </div>
 
     </div>
+
 {% block transaction-script %}
 {% endblock %}
 <script type="text/javascript">
