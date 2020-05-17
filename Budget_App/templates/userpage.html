@@ -57,6 +57,7 @@
   $(document).on('submit','#new-transaction-form',function(e){
     let x=$(".form.text").val();
     let y=$(".form.number").val();
+
     $.ajax({
       type:'POST',
       url:'{{userpage}}',
@@ -67,22 +68,12 @@
         csrfmiddlewaretoken:'{{csrf_token}}'
       }
     })
-      e.preventDefault();
 
-      id=-1
-      transactions=document.querySelectorAll('[class^=transaction-nr]')
-      for(let i=transactions.length-1;i>=0;i--)
-      {
-        //console.log(transactions[i].children.item(0));
-        //console.log(transactions[i].children.item(1));
-        if(transactions[i].children.item(0).innerHTML===x && transactions[i].children.item(1).innerHTML===y)
-          {
-            console.log(transactions[i].className[transactions[i].className.length-1]);
-          }
-      }
+      e.preventDefault();
       $(".form.text").val('')
       $(".form.number").val('')
 
   });
 </script>
+
 {% endblock %}

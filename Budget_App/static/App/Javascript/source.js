@@ -217,7 +217,19 @@ var Controller=(function(UICtrl,BCtrl){
           var type=UserInterface.typeOfTransaction();
           var transaction=Budget.newTransaction(type,input.description,input.sum);
           var totals=Budget.getBudget();
-          UserInterface.addElement(transaction.id,type,transaction.description,transaction.val);
+          var id_transaction
+          if(type=='income')
+          {
+            id_transaction=id_income
+            console.log('INCOme:'+id_transaction)
+
+          }
+          else
+          {
+            id=id_expense
+            console.log('Expense')
+          }
+          UserInterface.addElement(id_transaction,type,transaction.description,transaction.val);
           UserInterface.UpdateBudget(totals.income,totals.expenses,totals.income-totals.expenses);
 
           UserInterface.animateBudget();

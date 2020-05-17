@@ -4,6 +4,7 @@ from .forms import  UserForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import  messages
 from .models import  Transaction
+from django.contrib import  auth
 # Create your views here.
 
 
@@ -28,17 +29,14 @@ def registration(request):
     return render(request,'registration.html',{'form':form})
 
 def userpage(request):
-    current_user=request.user
+    current_user=auth.get_user(request)
     income_objects=Transaction.objects.filter(user=request.user,tip='income')
     expense_objects=Transaction.objects.filter(user=request.user,tip='expense')
     if request.method=='POST':
-        username=request.POST['description']
-        password=request.POST['valoare']
-        tip=request.POST['tip']
-        print(username)
-        print(password)
-        print(tip)
-    print(income_objects)
+        descriere=request.POST.get('description')
+        valoare=request.POST.get('valoare')
+        tip=request.POST.get('tip')
+        Transaction.objects.create(description=descriere,value=valoare,tip=tip,user=current_user)
     context={'user':current_user,
             'income_objects':income_objects,
             'expense_objects':expense_objects}
