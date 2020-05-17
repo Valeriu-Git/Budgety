@@ -3,7 +3,7 @@
 var UIController=(function(){
 
   return{
-    addElement:function(id,type,descr,sum)
+    addElement:function(type,descr,sum)
     {
       var button=document.createElement("input");
       button.type="image";
@@ -16,7 +16,7 @@ var UIController=(function(){
       description.className="transaction-description";
       description.innerHTML=descr;
       transaction=document.createElement("div");
-      transaction.className="transaction-nr"+id;
+      transaction.className="transaction-nr";
       transaction.appendChild(description);
       transaction.appendChild(val);
       transaction.appendChild(button);
@@ -93,7 +93,7 @@ var UIController=(function(){
       var bod=document.getElementsByTagName("body")[0];
       bod.style.overflow="hidden";
       setTimeout(function(){
-        transaction.style.display="none";
+        transaction.remove();
         bod.style.overflow="visible";
       },1250);
     },
@@ -118,79 +118,41 @@ var UIController=(function(){
 
 var BudgetController=(function(){
   var data={
-    expenses:[],
-    income:[],
     totalIncome:0,
     totalExpense:0
   }
 
-  var Income=function(id,description,val)
-  {
-    this.description=description;
-    this.val=val;
-    this.id=id;
-  }
-
-  var Expense=function(id,description,val)
-  {
-    this.description=description;
-    this.val=val;
-    this.id=id;
-  }
-
   return{
-    //add transaction to income/expenses array
-    newTransaction:function(type,description,sum){
-        id=0;
-        if(type=="income")
-          {
-            if(data.income.length!=0)
-              id=data.income[data.income.length-1].id+1;
-            data.totalIncome+=sum;
-            income=new Income(id,description,sum);
-            data.income.push(income);
-            return income;
-          }
-          else
-          {
-            if(data.expenses.length!=0)
-              id=data.expenses[data.expenses.length -1].id+1;
-            data.totalExpense+=sum;
-            expense=new Expense(id,description,sum);
-            data.expenses.push(expense);
-            return expense;
-          }
-    },
-    //get all data
-    check:function(){
-      console.log(data);
-    },
-    //get the totalIncome and totalExpense
-    getBudget:function()
+    //calculate the totalIncome
+    calculateIncome:function()
     {
-      return {
-        income:data.totalIncome,
-        expenses:data.totalExpense
+      var container=document.querySelector(".income-transactions")
+      var income_transactions=container.getElementsByClassName("transaction-nr")
+      totalIncome=0
+      if(income_transactions.length!=0)
+      {
+        for(var i=0;i<income_transactions.length;i++)
+        {
+          var val=parseInt(income_transactions[i].getElementsByClassName("value income")[0].innerHTML)
+          totalIncome+=val
+        }
       }
+      return totalIncome
     },
-    //delete element from income/expenses array
-    deleteElement:function(id,type)
+    calculateExpense:function()
     {
-      if(type=="income")
+      var container=document.querySelector(".expense-transactions")
+      var expense_transactions=container.getElementsByClassName("transaction-nr")
+      totalExpense=0
+      if(expense_transactions.length!=0)
       {
-        var element=data.income.find((transaction)=>transaction.id===id);
-        data.totalIncome-=element.val;
-        var index=data.income.indexOf(element);
-        data.income.splice(index,1);
-
+        for(var i=0;i<expense_transactions.length;i++)
+        {
+          var val=parseInt(expense_transactions[i].getElementsByClassName("value expense")[0].innerHTML)
+          totalExpense+=val
+        }
       }
-      else
-      {
-        var element=data.expenses.find((transaction)=>transaction.id===id);
-        data.totalExpense-=element.val;
-        var index=data.expenses.indexOf(element);
-        data.expenses.splice(index,1);
-      }
+      return totalExpense
     }
   }
 })();
@@ -204,6 +166,9 @@ var Controller=(function(UICtrl,BCtrl){
 
   var SetupListeners=function(){
 
+    window.addEventListener('load',function(){
+      UserInterface.UpdateBudget(Budget.calculateIncome(),Budget.calculateExpense(),Budget.calculateIncome()-Budget.calculateExpense());
+    })
     //event when we insert a transaction
     document.querySelector(".tick").addEventListener("click",function(){
 
@@ -215,23 +180,8 @@ var Controller=(function(UICtrl,BCtrl){
         {
           var input=UserInterface.getUserFields();
           var type=UserInterface.typeOfTransaction();
-          var transaction=Budget.newTransaction(type,input.description,input.sum);
-          var totals=Budget.getBudget();
-          var id_transaction
-          if(type=='income')
-          {
-            id_transaction=id_income
-            console.log('INCOme:'+id_transaction)
-
-          }
-          else
-          {
-            id=id_expense
-            console.log('Expense')
-          }
-          UserInterface.addElement(id_transaction,type,transaction.description,transaction.val);
-          UserInterface.UpdateBudget(totals.income,totals.expenses,totals.income-totals.expenses);
-
+          UserInterface.addElement(type,input.description,input.sum);
+          UserInterface.UpdateBudget(Budget.calculateIncome(),Budget.calculateExpense(),Budget.calculateIncome()-Budget.calculateExpense());
           UserInterface.animateBudget();
         }
     })
@@ -246,15 +196,22 @@ var Controller=(function(UICtrl,BCtrl){
     {
       if(e.target &&e.target.classList.contains("delete"))
         {var type;
+          newIncome=Budget.calculateIncome()
+          newExpense=Budget.calculateExpense()
         if(e.target.parentElement.parentElement.className=="income-transactions")
+      {
           type="income";
+          removed_value=parseInt(e.target.parentElement.querySelector(".value").innerHTML)
+          newIncome-=removed_value
+      }
         else
+        {
           type="expense";
-        var id=parseInt(e.target.parentElement.className[e.target.parentElement.className.length-1]);
+          removed_value=parseInt(e.target.parentElement.querySelector(".value").innerHTML)
+          newExpense -= removed_value
+        }
         UserInterface.removeTransaction(e.target);
-        Budget.deleteElement(id,type);
-        totals=Budget.getBudget();
-        UserInterface.UpdateBudget(totals.income,totals.expenses,totals.income-totals.expenses);
+        UserInterface.UpdateBudget(newIncome,newExpense,newIncome-newExpense);
         UserInterface.animateBudget();
         }
     })

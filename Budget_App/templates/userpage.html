@@ -53,7 +53,8 @@
 
 {% block transaction-script %}
 {% url 'userpage-url' as userpage %}
-<script type="text/javascript">
+
+ <script type="text/javascript">
   $(document).on('submit','#new-transaction-form',function(e){
     let x=$(".form.text").val();
     let y=$(".form.number").val();

@@ -87,10 +87,11 @@
       <div class="expenseContainer">
         <div class="expense-title expense"><p>EXPENSES</p></div>
         <div class="expense-transactions">
-        </div>
+
         {% block expense_transactions %}
 
         {% endblock %}
+        </div>
       </div>
 
     </div>
@@ -100,6 +101,7 @@
 <script type="text/javascript">
   var stat="{% static 'App/images/' %}";
 </script>
- <script  type="text/javascript" src="{% static 'App/Javascript/source.js' %}"></script>
+<script  type="text/javascript" src="{% static 'App/Javascript/source.js' %}"></script>
+
   </body>
 </html>
