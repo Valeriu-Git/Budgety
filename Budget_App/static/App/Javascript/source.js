@@ -8,7 +8,10 @@ var UIController=(function(){
       var button=document.createElement("input");
       button.type="image";
       button.src=stat+"cancel.png";
+      button.alt="Submit";
       button.className="delete";
+      var form= document.createElement("form");
+      form.appendChild(button);
       var val=document.createElement("div");
       val.className="value "+type;
       val.innerHTML=sum;
@@ -19,7 +22,7 @@ var UIController=(function(){
       transaction.className="transaction-nr";
       transaction.appendChild(description);
       transaction.appendChild(val);
-      transaction.appendChild(button);
+      transaction.appendChild(form);
       if(type=="income")
         {
           var container=document.querySelector(".income-transactions");
@@ -83,7 +86,7 @@ var UIController=(function(){
     },
     removeTransaction:function(button)
     {
-      transaction=button.parentElement;
+      transaction=button.parentElement.parentElement;
       transaction.style.position="relative";
       if(transaction.parentElement.classList.contains("income-transactions"))
         transaction.style.transform="translateX(-1000px)";
@@ -196,23 +199,40 @@ var Controller=(function(UICtrl,BCtrl){
     {
       if(e.target &&e.target.classList.contains("delete"))
         {var type;
-          newIncome=Budget.calculateIncome()
-          newExpense=Budget.calculateExpense()
-        if(e.target.parentElement.parentElement.className=="income-transactions")
+         e.preventDefault();
+         newIncome=Budget.calculateIncome()
+         newExpense=Budget.calculateExpense()
+        if(e.target.parentElement.parentElement.parentElement.className=="income-transactions")
       {
           type="income";
-          removed_value=parseInt(e.target.parentElement.querySelector(".value").innerHTML)
+          removed_value=parseInt(e.target.parentElement.parentElement.querySelector(".value").innerHTML)
           newIncome-=removed_value
       }
         else
         {
           type="expense";
-          removed_value=parseInt(e.target.parentElement.querySelector(".value").innerHTML)
+          removed_value=parseInt(e.target.parentElement.parentElement.querySelector(".value").innerHTML)
           newExpense -= removed_value
         }
+        descr=e.target.parentElement.parentElement.querySelector(".transaction-description").innerHTML
+        val=e.target.parentElement.parentElement.querySelector(".value").innerHTML
         UserInterface.removeTransaction(e.target);
         UserInterface.UpdateBudget(newIncome,newExpense,newIncome-newExpense);
         UserInterface.animateBudget();
+
+        $.ajax({
+          type:'POST',
+          url:user_page,
+          data:{
+            description:descr,
+            value:val,
+            tip:type,
+            post_type:'delete',
+            csrfmiddlewaretoken:csrf
+          }
+         })
+
+
         }
     })
 

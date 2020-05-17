@@ -31,7 +31,10 @@
 <div class="transaction-nr{{income.id_tip}}">
   <div class="transaction-description">{{income.description}}</div>
   <div class="value income">{{income.value}}</div>
-  <input type="image" src="{% static 'App/images/cancel.png' %}" class="delete">
+  <form  method="post">
+    {% csrf_token %}
+      <input type="image" src="{% static 'App/images/cancel.png' %}" class="delete">
+  </form>
 </div>
 {% endfor %}
 {% endblock %}
@@ -41,7 +44,10 @@
 <div class="transaction-nr{{expense.id_tip}}">
   <div class="transaction-description">{{expense.description}}</div>
   <div class="value expense">{{expense.value}}</div>
-  <input type="image" src="{% static 'App/images/cancel.png' %}" class="delete">
+  <form class="" action="index.html" method="post">
+    {% csrf_token %}
+    <input type="image" src="{% static 'App/images/cancel.png' %}" class="delete">
+  </form>
 </div>
 {% endfor %}
 {% endblock %}
@@ -52,8 +58,8 @@
 
 
 {% block transaction-script %}
-{% url 'userpage-url' as userpage %}
 
+{% url 'userpage-url' as userpage %}
  <script type="text/javascript">
   $(document).on('submit','#new-transaction-form',function(e){
     let x=$(".form.text").val();
@@ -66,6 +72,7 @@
         description:x,
         valoare:y,
         tip:$('.type-transaction').val(),
+        post_type:'adauga',
         csrfmiddlewaretoken:'{{csrf_token}}'
       }
     })
@@ -77,4 +84,8 @@
   });
 </script>
 
+<script>
+  var csrf='{{csrf_token}}'
+  var user_page='{{userpage}}'
+</script>
 {% endblock %}

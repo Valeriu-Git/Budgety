@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import  messages
 from .models import  Transaction
 from django.contrib import  auth
-# Create your views here.
+
 
 
 def index(request):
@@ -30,13 +30,25 @@ def registration(request):
 
 def userpage(request):
     current_user=auth.get_user(request)
-    income_objects=Transaction.objects.filter(user=request.user,tip='income')
-    expense_objects=Transaction.objects.filter(user=request.user,tip='expense')
+    income_objects=Transaction.objects.filter(user=current_user,tip='income')
+    expense_objects=Transaction.objects.filter(user=current_user,tip='expense')
     if request.method=='POST':
-        descriere=request.POST.get('description')
-        valoare=request.POST.get('valoare')
-        tip=request.POST.get('tip')
-        Transaction.objects.create(description=descriere,value=valoare,tip=tip,user=current_user)
+        if request.POST.get('post_type') == 'adauga':
+            descriere=request.POST.get('description')
+            valoare=request.POST.get('valoare')
+            tip=request.POST.get('tip')
+            Transaction.objects.create(description=descriere,value=valoare,tip=tip,user=current_user)
+        elif request.POST.get('post_type') == 'delete':
+            descriere=request.POST.get('description')
+            valoare=request.POST.get('value')
+            tip=request.POST.get('tip')
+            delete_objects=Transaction.objects.filter(user=current_user,tip=tip,description=descriere,value=valoare)
+            print(delete_objects)
+            for objects in delete_objects:
+                objects.delete()
+                break
+
+
     context={'user':current_user,
             'income_objects':income_objects,
             'expense_objects':expense_objects}
